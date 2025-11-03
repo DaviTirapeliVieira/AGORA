@@ -1,0 +1,17 @@
+.chamada-template {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+
+  h2 {
+    text-align: center;
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .save-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+}

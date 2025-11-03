@@ -1,0 +1,8 @@
+import axios from 'axios';
+
+const fetch{{pascalCase featureName}}Api = async (id) => {
+  const response = await axios.get(`/api/{{kebabCase featureName}}/${id}`);
+  return response.data;
+};
+
+export default fetch{{pascalCase featureName}}Api;

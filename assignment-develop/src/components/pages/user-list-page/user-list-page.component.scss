@@ -1,0 +1,24 @@
+.user-list-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  padding: 20px;
+}
+
+.user-list-paper {
+  width: 70%;
+  height: 90vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-list-title {
+  margin-bottom: 20px;
+}
+
+.user-list-description {
+  margin-top: 10px;
+  flex-grow: 1;
+}

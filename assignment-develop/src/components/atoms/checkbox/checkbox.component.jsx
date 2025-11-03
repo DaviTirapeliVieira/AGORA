@@ -1,0 +1,8 @@
+import "./checkbox.component.scss";
+
+export const Checkbox = ({ checked, onChange }) => (
+  <label className="checkbox">
+    <input type="checkbox" checked={checked} onChange={onChange} />
+    <span className="checkmark" />
+  </label>
+);

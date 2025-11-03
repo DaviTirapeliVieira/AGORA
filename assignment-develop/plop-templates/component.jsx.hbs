@@ -1,0 +1,19 @@
+import PropTypes from 'prop-types';
+import './{{kebabCase name}}.scss';
+
+const propTypes = {
+children: PropTypes.node,
+// Add other prop types if necessary
+};
+
+const {{pascalCase name}} = ({ children }) => {
+  return (
+    <div className="{{kebabCase name}}">
+      {children}
+    </div>
+  );
+};
+
+{{pascalCase name}}.propTypes = propTypes;
+
+export default {{pascalCase name}};

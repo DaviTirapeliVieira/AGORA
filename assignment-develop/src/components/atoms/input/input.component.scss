@@ -1,0 +1,12 @@
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db; // gray-300
+  border-radius: 0.5rem;
+  outline: none;
+
+  &:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+  }
+}

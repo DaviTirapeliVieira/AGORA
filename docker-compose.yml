@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./assignment-api
+    container_name: nest-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo-db
+    environment:
+      MONGO_URL: mongodb://mongo-db:27017/nest
+      JWT_SECRET: secretKey
+    command: sh -c "yarn console seed && yarn start:dev"
+
+  frontend:
+    build: ./assignment-develop
+    container_name: react-dev
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    environment:
+      VITE_API_BASE_URL: http://localhost:3000/
+    command: npm run dev -- --host
+    volumes:
+      - ./assignment-develop:/app
+      - /app/node_modules
+
+volumes:
+  mongo-data:

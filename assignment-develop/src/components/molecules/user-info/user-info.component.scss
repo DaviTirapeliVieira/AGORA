@@ -1,0 +1,32 @@
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  flex-wrap: wrap;
+
+  &__column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 220px;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__label {
+    font-size: 1rem;
+    color: #333;
+    margin: 0;
+  }
+
+  .label {
+    font-size: 1rem;
+    color: #555;
+  }
+}

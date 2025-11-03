@@ -1,0 +1,18 @@
+import { call, put, takeEvery } from 'redux-saga/effects';
+import { fetch{{pascalCase featureName}}Request, fetch{{pascalCase featureName}}Success, fetch{{pascalCase featureName}}Failure } from '../ducks/{{kebabCase featureName}}-slice';
+import fetch{{pascalCase featureName}}Api from '../api/{{kebabCase featureName}}-api';
+
+function* fetch{{pascalCase featureName}}Saga(action) {
+  try {q
+    const {{camelCase featureName}} = yield call(fetch{{pascalCase featureName}}Api, action.payload);
+    yield put(fetch{{pascalCase featureName}}Success({{camelCase featureName}}));
+  } catch (error) {
+    yield put(fetch{{pascalCase featureName}}Failure(error.message));
+  }
+}
+
+function* watchFetch{{pascalCase featureName}}Saga() {
+  yield takeEvery(fetch{{pascalCase featureName}}Request.type, fetch{{pascalCase featureName}}Saga);
+}
+
+export default watchFetch{{pascalCase featureName}}Saga;

@@ -1,0 +1,33 @@
+import { createSlice } from '@reduxjs/toolkit';
+import {{pascalCase featureName}} from '../models/{{kebabCase featureName}}-model';
+
+const initialState = {
+  {{camelCase featureName}}: new {{pascalCase featureName}}(),
+  error: null,
+  loading: false,
+};
+
+const {{camelCase featureName}}Slice = createSlice({
+  name: '{{camelCase featureName}}',
+  initialState,
+  reducers: {
+    fetch{{pascalCase featureName}}Request: (state) => ({
+      ...state,
+      loading: true,
+    }),
+    fetch{{pascalCase featureName}}Success: (state, action) => ({
+      ...state,
+      loading: false,
+      {{camelCase featureName}}: new {{pascalCase featureName}}(...action.payload),
+      error: null,
+    }),
+    fetch{{pascalCase featureName}}Failure: (state, action) => ({
+      ...state,
+      loading: false,
+      error: action.payload,
+    }),
+  },
+});
+
+export const { fetch{{pascalCase featureName}}Request, fetch{{pascalCase featureName}}Success, fetch{{pascalCase featureName}}Failure } = {{camelCase featureName}}Slice.actions;
+export default {{camelCase featureName}}Slice.reducer;
