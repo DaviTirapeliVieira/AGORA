@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const chatSlice = createSlice({
-  name: "chat",
+const generatorSlice = createSlice({
+  name: "generator",
   initialState: {
     history: [{ title: "Conversa 1" }],
     messages: [],
     loading: false,
     error: null,
+    downloading: false,
+    downloadError: null,
   },
   reducers: {
     sendMessageRequest: (state, action) => {
@@ -39,6 +41,18 @@ const chatSlice = createSlice({
         timestamp: new Date().toISOString(),
       });
     },
+
+    downloadFolderRequest: (state) => {
+      state.downloading = true;
+      state.downloadError = null;
+    },
+    downloadFolderSuccess: (state) => {
+      state.downloading = false;
+    },
+    downloadFolderFailure: (state, action) => {
+      state.downloading = false;
+      state.downloadError = action.payload;
+    },
   },
 });
 
@@ -46,6 +60,9 @@ export const {
   sendMessageRequest,
   sendMessageSuccess,
   sendMessageFailure,
-} = chatSlice.actions;
+  downloadFolderRequest,
+  downloadFolderSuccess,
+  downloadFolderFailure,
+} = generatorSlice.actions;
 
-export default chatSlice.reducer;
+export default generatorSlice.reducer;

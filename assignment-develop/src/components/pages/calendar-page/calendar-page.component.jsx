@@ -1,41 +1,52 @@
-// import { useEffect } from "react";
-// import FullCalendar from "@fullcalendar/react";
-// import dayGridPlugin from "@fullcalendar/daygrid";
-// import timeGridPlugin from "@fullcalendar/timegrid";
-// import interactionPlugin from "@fullcalendar/interaction";
+import MainLayout from '@/components/templates/main-layout/main-layout.component';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { useSelector, useDispatch } from 'react-redux';
+import { addEventRequest } from '@/logic/calendar/ducks/calendar.slice';
+import {
+  selectCalendarEvents,
+  selectCalendarLoading,
+  selectCalendarError,
+} from '@/logic/calendar/ducks/calendar.selectors';
+import { CircularProgress, Alert } from '@mui/material';
+import './calendar-page.component.scss';
 
 const CalendarPage = () => {
-  return <div>Page Calendar</div>;
-  // useEffect(() => {
-  //   document.body.classList.add("dark");
-  // }, []);
+  const dispatch = useDispatch();
+  const events = useSelector(selectCalendarEvents);
+  const loading = useSelector(selectCalendarLoading);
+  const error = useSelector(selectCalendarError);
 
-  // return (
-  //   <div className="h-screen bg-gray-900 text-white p-4">
-  //     <h1 className="text-2xl font-bold mb-4">Agenda</h1>
-  //     <FullCalendar
-  //       plugins={[timeGridPlugin, interactionPlugin, dayGridPlugin]}
-  //       initialView="timeGridWeek"
-  //       nowIndicator={true}
-  //       editable={true}
-  //       selectable={true}
-  //       height="auto"
-  //       headerToolbar={{
-  //         start: "today prev,next",
-  //         center: "title",
-  //         end: "dayGridMonth,timeGridWeek,timeGridDay",
-  //       }}
-  //       events={[
-  //         {
-  //           title: "Evento de Exemplo",
-  //           start: "2025-05-05T19:00:00",
-  //           end: "2025-05-05T20:00:00",
-  //         },
-  //       ]}
-  //     />
-  //   </div>
-  // );
+  const safeEvents = Array.isArray(events) ? events : [];
+
+  const handleDateClick = info => {
+    const title = prompt('Título do evento:');
+    if (title) {
+      dispatch(
+        addEventRequest({
+          id: Date.now().toString(),
+          title,
+          start: info.dateStr,
+        }),
+      );
+    }
+  };
+
+  return (
+    <MainLayout>
+      <div className="calendar-wrapper">
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin]}
+          initialView="dayGridMonth"
+          dateClick={handleDateClick}
+          events={safeEvents}
+        />
+      </div>
+      {loading && <CircularProgress />}
+      {error && <Alert severity="error">{error}</Alert>}
+    </MainLayout>
+  );
 };
 
 export default CalendarPage;
-

@@ -1,11 +1,11 @@
+$primary-color: #000000;
+
 .chamada-template {
   max-width: 800px;
-  margin: 0 auto;
   padding: 1.5rem;
 
   h2 {
-    text-align: center;
-    color: var(--primary);
+    color: $primary-color;
     font-weight: 600;
   }
 

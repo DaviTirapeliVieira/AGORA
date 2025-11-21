@@ -1,11 +1,12 @@
 import "./input.component.scss";
 
-const Input = ({ value, onChange, placeholder }) => {
+const Input = ({ value, onChange, placeholder, name, type = "text" }) => {
   return (
     <input
-      type="text"
+      type={type}
+      name={name}
       value={value}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={onChange}
       placeholder={placeholder}
       className="input"
     />

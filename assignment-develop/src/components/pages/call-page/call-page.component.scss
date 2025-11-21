@@ -77,23 +77,23 @@
         }
       }
     }
-
-    .btn-primary {
-      display: flex;
-      justify-content: center;
-      align-items: right;
-      margin-left: auto;
-      margin-top: 1rem;
-      border: none;
-      color: #fff;
-      font-weight: 500;
-      padding: 0.6rem 1.4rem;
-      border-radius: 0.4rem;
-      transition: background-color 0.2s ease;
-    }
   }
 
   .modal-background {
     background-color: rgba(0, 0, 0, 0.6);
   }
+}
+
+.call-actions {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-left: auto;
+  margin-top: 1rem;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 0.6rem 1.4rem;
+  border-radius: 0.4rem;
+  transition: background-color 0.2s ease;
 }

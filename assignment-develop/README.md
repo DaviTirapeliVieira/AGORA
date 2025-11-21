@@ -1,6 +1,6 @@
 # Ágora SPA Project
 
-This is the front-end project for the Ágora. It works as the client-side application and connects to the [Ágora API] for backend functionalities, including user authentication, data management, and other API services.
+This is the front-end project for the Ágora. It works as the client-side application and connects to the [Ágora API](https://github.com/luismschiazza/agora-api) for backend functionalities, including user authentication, data management, and other API services.
 
 ---
 
@@ -198,7 +198,7 @@ This approach ensures consistency, reusability, and scalability across the UI by
 
 ### Troubleshooting
 
-- **API Errors**: Ensure the `VITE_API_BASE_URL` in your `.env` file points to a running instance of the [Assignment API](https://github.com/joaopschias/assignment-api).
+- **API Errors**: Ensure the `VITE_API_BASE_URL` in your `.env` file points to a running instance of the [Assignment API](https://github.com/luismschiazza/agora-api).
 - **Port Conflicts**: Change the development server port in `vite.config.js` if `5173` is already in use.
 - **Style or Lint Errors**: Run `npm run fix` / `yarn fix` to auto-fix issues.
 

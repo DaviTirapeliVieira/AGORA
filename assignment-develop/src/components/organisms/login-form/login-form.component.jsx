@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Button, TextField, Box, Typography } from '@mui/material';
+import LinkButton from '@/components/atoms/link-button/link-button.component';
 import './login-form.component.scss';
 
 const propTypes = {
@@ -60,6 +61,11 @@ const LoginForm = ({ token = null, error = null, loading, login }) => {
         fullWidth
         margin="normal"
         className="login-form-input"
+      />
+      <LinkButton
+        to="/reset-password"
+        label="Forgot Password?"
+        className="login-form-forgot-password"
       />
       <Button
         type="submit"

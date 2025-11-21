@@ -1,31 +1,30 @@
-import { useSelector } from "react-redux";
+import CodeForm from "@/components/molecules/code-form/code-form.component";
 import {
-  selectChatMessages,
-  selectChatLoading,
-  selectChatError,
-} from "@/logic/chat/ducks/chat.selector";
-import ChatInput from "@/components/molecules/code-form/code-form.component";
+  CircularProgress,
+  Alert,
+} from "@mui/material";
 import "./chat-area.component.scss";
 
-const ChatArea = ({ onSend }) => {
-  const messages = useSelector(selectChatMessages);
-  const loading = useSelector(selectChatLoading);
-  const error = useSelector(selectChatError);
-
+const ChatArea = ({ onSend, onDownload, loading, error, disabled }) => {
   return (
     <div className="chat-area">
       <div className="chat-content">
-        {messages.map((msg, i) => (
-          <p key={i} className={msg.sender}>
-            <strong>{msg.sender === "user" ? "Você" : "IA"}:</strong> {msg.text}
-          </p>
-        ))}
+        <div className="download-icon" onClick={onDownload} disabled={disabled}>
+          <i className="bi bi-download"></i>
+        </div>
 
-        {loading && <p className="loading">Carregando resposta...</p>}
-        {error && <p className="error">Erro: {error}</p>}
+        {loading && (
+          <CircularProgress className="loading-alert" />
+        )}
+
+        {error && (
+          <Alert severity="error" className="error-alert">
+            Erro: {error}
+          </Alert>
+        )}
       </div>
 
-      <ChatInput onSend={onSend} />
+      <CodeForm onChange={onSend} onDownload={onDownload} disabled={disabled} />
     </div>
   );
 };

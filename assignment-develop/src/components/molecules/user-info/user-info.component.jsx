@@ -1,8 +1,8 @@
 import Label from '@/components/atoms/label/label.component';
 import './user-info.component.scss';
 
-const UserInfo = ({ userInformation = {}, user = {} }) => {
-  const infoEntries = Object.entries(userInformation);
+const UserInfo = ({ user = {} }) => {
+  const infoEntries = Object.entries(user);
 
   return (
     <div className="user-info">

@@ -1,0 +1,51 @@
+.atom-select {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.select-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.select-modern {
+  width: 100%;
+  padding: 6px 14px;
+  border: 1.8px solid #d1d5db;
+  border-radius: 10px;
+  background: #f9fafb;
+  font-size: 0.95rem;
+  color: #333;
+  transition: all 0.22s ease;
+  appearance: none;
+  cursor: pointer;
+}
+
+.select-modern:hover {
+  border-color: #9ca3af;
+}
+
+.select-modern:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+}
+
+.select-wrapper::after {
+  content: "▾";
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.85rem;
+  color: #6b7280;
+}

@@ -1,11 +1,10 @@
 @use "sass:color";
 
-$primary: #3b82f6; // azul Tailwind
+$primary: #c3daff;
 
 .student-item {
   &.selected {
-    background-color: color.scale($primary, $lightness: -10%);
-    color: #fff;
+    background-color: $primary;
   }
 }
 
@@ -32,12 +31,5 @@ $primary: #3b82f6; // azul Tailwind
       font-weight: 500;
       color: var(--text);
     }
-  }
-
-  .info-btn {
-    background: none;
-    color: var(--primary);
-    font-size: 1.3rem;
-    transition: color 0.2s;
   }
 }

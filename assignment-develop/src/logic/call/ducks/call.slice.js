@@ -6,48 +6,67 @@ const initialState = {
   selectedIndex: 0,
   loading: false,
   error: null,
+  numAulas: [],
 };
 
-const chamadaSlice = createSlice({
-  name: "chamada",
+const callSlice = createSlice({
+  name: "call",
   initialState,
   reducers: {
-    fetchChamadaRequest: (state) => {
+    fetchCallRequest: (state) => {
       state.loading = true;
       state.error = null;
     },
-    fetchChamadaSuccess: (state, action) => {
+
+    fetchCallSuccess: (state, action) => {
       state.loading = false;
-      state.alunos = action.payload;
-      state.presenca = action.payload.reduce((acc, aluno) => {
-        acc[aluno.nome] = false;
+
+      const alunos = action.payload?.alunos ?? [];
+      const numAulas = action.payload?.numAulas ?? 0;
+
+      state.alunos = alunos;
+      state.numAulas = numAulas;
+
+      state.presenca = alunos.reduce((acc, aluno) => {
+        acc[aluno.name] = Array(numAulas).fill(false);
         return acc;
       }, {});
     },
-    fetchChamadaFailure: (state, action) => {
+
+    fetchCallFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
+
     togglePresenca: (state, action) => {
-      const nome = action.payload;
-      state.presenca[nome] = !state.presenca[nome];
+      const { name, aulaIndex } = action.payload;
+      if (!state.presenca[name]) {
+        state.presenca[name] = Array(state.numAulas).fill(false);
+      }
+      state.presenca[name][aulaIndex] = !state.presenca[name][aulaIndex];
     },
+
     moveSelectedUp: (state) => {
-      if (state.alunos.length > 0)
+      if (state.alunos.length > 0) {
         state.selectedIndex =
           (state.selectedIndex - 1 + state.alunos.length) % state.alunos.length;
+      }
     },
+
     moveSelectedDown: (state) => {
-      if (state.alunos.length > 0)
-        state.selectedIndex = (state.selectedIndex + 1) % state.alunos.length;
+      if (state.alunos.length > 0) {
+        state.selectedIndex =
+          (state.selectedIndex + 1) % state.alunos.length;
+      }
     },
-    saveChamadaRequest: (state) => {
+
+    saveCallRequest: (state) => {
       state.loading = true;
     },
-    saveChamadaSuccess: (state) => {
+    saveCallSuccess: (state) => {
       state.loading = false;
     },
-    saveChamadaFailure: (state, action) => {
+    saveCallFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -55,15 +74,15 @@ const chamadaSlice = createSlice({
 });
 
 export const {
-  fetchChamadaRequest,
-  fetchChamadaSuccess,
-  fetchChamadaFailure,
+  fetchCallRequest,
+  fetchCallSuccess,
+  fetchCallFailure,
   togglePresenca,
   moveSelectedUp,
   moveSelectedDown,
-  saveChamadaRequest,
-  saveChamadaSuccess,
-  saveChamadaFailure,
-} = chamadaSlice.actions;
+  saveCallRequest,
+  saveCallSuccess,
+  saveCallFailure,
+} = callSlice.actions;
 
-export default chamadaSlice.reducer;
+export default callSlice.reducer;

@@ -1,58 +1,33 @@
-import "./code-form.component.scss";
+import { useState } from 'react';
+import Input from '@/components/atoms/input/input.component';
+import Button from '@/components/atoms/button/button.component';
+import SendIcon from '@mui/icons-material/Send';
+import './code-form.component.scss';
 
-const FancySearch = ({ placeholder = "Gerar Código", onChange }) => {
+const CodeForm = ({ placeholder = 'Gerar Código', onSend, disabled }) => {
+  const [value, setValue] = useState("");
+
+  const handleSubmit = () => {
+    if (!value.trim()) return;
+    onSend(value);
+    setValue("");
+  };
+
   return (
-    <div className="fancy-search">
-      <div className="glow"></div>
-      <div className="darkBorderBg"></div>
-      <div className="darkBorderBg"></div>
-      <div className="darkBorderBg"></div>
+    <div className="code-form">
+      <Input
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
 
-      <div className="white"></div>
-      <div className="border"></div>
-
-      <div className="fancy-search__main">
-        <input
-          placeholder={placeholder}
-          type="text"
-          name="text"
-          className="input"
-          onChange={onChange}
-        />
-
-        <div id="input-mask"></div>
-        <div id="pink-mask"></div>
-        <div className="filter-border"></div>
-
-        <div id="filter-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            height="24"
-            fill="none"
-            className="feather feather-search"
-          >
-            <circle stroke="url(#search)" r="8" cy="11" cx="11"></circle>
-            <line stroke="url(#searchl)" y2="16.65" y1="22" x2="16.65" x1="22"></line>
-            <defs>
-              <linearGradient gradientTransform="rotate(50)" id="search">
-                <stop stopColor="#f8e7f8" offset="0%"></stop>
-                <stop stopColor="#b6a9b7" offset="50%"></stop>
-              </linearGradient>
-              <linearGradient id="searchl">
-                <stop stopColor="#b6a9b7" offset="0%"></stop>
-                <stop stopColor="#837484" offset="50%"></stop>
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-      </div>
+      <Button
+        onClick={handleSubmit}
+        disabled={disabled}
+        label={<SendIcon />}
+      />
     </div>
   );
 };
 
-export default FancySearch;
+export default CodeForm;

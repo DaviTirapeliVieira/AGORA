@@ -6,6 +6,7 @@
     opacity: 0;
     width: 0;
     height: 0;
+    margin: 1px;
   }
 
   .checkmark {
@@ -24,9 +25,9 @@
   }
 
   input:checked + .checkmark {
-    background-color: var(--primary);
+    background-color: #131518;
   }
-
+s
   input:checked + .checkmark:after {
     display: block;
     position: absolute;

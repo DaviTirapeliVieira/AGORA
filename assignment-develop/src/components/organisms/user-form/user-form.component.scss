@@ -1,0 +1,45 @@
+.user-form-card {
+  max-width: 600px;
+  width: 100%;
+  height: 70vh;
+  margin: 50px auto;
+  padding: 40px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+}
+
+.user-form {
+  width: 100%;
+
+  .btn {
+    width: 150px;
+    padding: 10px 0;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+}
+
+.user-form h2 {
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.form-row {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}

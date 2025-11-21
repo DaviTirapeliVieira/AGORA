@@ -30,7 +30,7 @@ function* saveGradesSaga(action) {
   }
 }
 
-export function* gradesSaga() {
+export default function* gradesSaga() {
   yield takeLatest(fetchGradesRequest.type, fetchGradesSaga);
   yield takeLatest(saveGradesRequest.type, saveGradesSaga);
 }

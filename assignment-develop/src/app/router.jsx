@@ -8,39 +8,30 @@ import GeneratorPage from '@/components/pages/generator-page/generator-page.comp
 import CallPage from '@/components/pages/call-page/call-page.component';
 import GradesPage from '@/components/pages/grades-page/grades-page.component';
 import CalendarPage from '@/components/pages/calendar-page/calendar-page.component';
-import Authenticated from '@/logic/authentication/guards/authenticated';
+import CreateUserPage from '@/components/pages/create-user-page/create-user-page.component';
+import ResetPasswordPage from '@/components/pages/reset-password-page/reset-password-page.component';
+//import Authenticated from '@/logic/authentication/guards/authenticated';
 import Unauthenticated from '@/logic/authentication/guards/unauthenticated';
-
-const UserPlaceholder = () => <div>Create User Page Placeholder</div>;
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Authenticated />,
+    //element: <Authenticated />,
     children: [
       { path: '/', element: <HomePage /> },
       {
         path: '/users',
         children: [
           { path: '', element: <UserListPage /> },
-          { path: 'create', element: <UserPlaceholder /> },
+          { path: 'create', element: <CreateUserPage /> },
+          { path: 'call', element: <CallPage /> },
+          { path: 'grades', element: <GradesPage /> },
+          { path: 'calendar', element: <CalendarPage /> },
         ],
       },
       {
         path: '/generator',
         element: <GeneratorPage />,
-      },
-      {
-        path: '/users/call',
-        element: <CallPage />,
-      },
-      {
-        path: '/users/grades',
-        element: <GradesPage />,
-      },
-      {
-        path: '/users/calendar',
-        element: <CalendarPage />,
       },
     ],
   },
@@ -54,14 +45,9 @@ const router = createBrowserRouter([
         children: [{ index: true, element: <LoginPage /> }],
       },
       {
-        path: '/register',
-        element: <AuthLayout />,
-        children: [{ index: true, element: <div>Register Page</div> }],
-      },
-      {
         path: '/reset-password',
         element: <AuthLayout />,
-        children: [{ index: true, element: <div>Reset Password Page</div> }],
+        children: [{ index: true, element: <ResetPasswordPage /> }],
       },
     ],
   },

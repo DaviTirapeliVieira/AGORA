@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import { useSelector } from "react-redux";
-import "./sidebar-code.component.scss";
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import MenuIcon from "@mui/icons-material/Menu";
+import './sidebar-code.component.scss';
 
 const Sidebar = () => {
-  const history = useSelector((state) => state.chat.history);
-  const [isOpen, setIsOpen] = useState(true);
-
-  const openSidebar = () => setIsOpen(true);
-  const closeSidebar = () => setIsOpen(false);
+  const history = useSelector(state => state.generator.history);
+  const [open, setOpen] = useState(false);
 
   return (
-    <div>
-      <div className={`sidebar ${isOpen ? "open" : "closed"}`}>
-        <button className="close-btn hide-large" onClick={closeSidebar}>
-          Fechar
+    <>
+      <button className="menu-btn" onClick={() => setOpen(true)}>
+        <MenuIcon />
+      </button>
+
+      {open && <div className="overlay" onClick={() => setOpen(false)}></div>}
+
+      <aside className={`sidebar ${open ? 'open' : ''}`}>
+        <button className="close-btn" onClick={() => setOpen(false)}>
+          &times;
         </button>
 
         <ul className="side-list">
@@ -24,13 +28,9 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-      </div>
-      <button className="menu-btn hide-large" onClick={openSidebar}>
-        &#9776;
-      </button>
-    </div>
+      </aside>
+    </>
   );
 };
 
 export default Sidebar;
-

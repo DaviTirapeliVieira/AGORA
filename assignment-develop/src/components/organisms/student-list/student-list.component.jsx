@@ -6,19 +6,23 @@ export const StudentList = ({
   presenca,
   selectedIndex,
   onToggle,
-  onInfo,
   onKey,
+  numAulas,
+  onViewDetails,
 }) => (
-  <ul className="student-list" tabIndex="0" onKeyDown={onKey}>
-    {alunos.map((aluno, index) => (
+  <div className="student-list-container">
+    <ul className="student-list" tabIndex={0} onKeyDown={onKey}>
+      {alunos.map((aluno, index) => (
       <StudentItem
-        key={index}
+        key={aluno.id}
         aluno={aluno}
-        checked={presenca[aluno.nome]}
-        onToggle={() => onToggle(aluno.nome)}
-        onInfo={() => onInfo(aluno)}
+        checked={presenca[aluno.name]}
         selected={selectedIndex === index}
+        onToggle={onToggle}
+        numAulas={numAulas}
+        onViewDetails={onViewDetails}
       />
     ))}
-  </ul>
+    </ul>
+  </div>
 );

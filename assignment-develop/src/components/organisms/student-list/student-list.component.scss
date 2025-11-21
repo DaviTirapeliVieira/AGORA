@@ -1,5 +1,14 @@
+.student-list-container {
+  height: 340px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
 .student-list {
-  margin-top: 1rem;
+  margin: 0;
   padding: 0;
   list-style: none;
   outline: none;

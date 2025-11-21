@@ -3,12 +3,12 @@ import {
   sendMessageRequest,
   sendMessageSuccess,
   sendMessageFailure,
-} from "../ducks/chat.slice";
-import chatApi from "../api/chat.api";
+} from "../ducks/generator.slice";
+import generatorApi from "../api/generator.api";
 
 function* handleSendMessageSaga(action) {
   try {
-    const response = yield call(chatApi, action.payload);
+    const response = yield call(generatorApi.sendMessage, action.payload);
     yield put(sendMessageSuccess(response));
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
