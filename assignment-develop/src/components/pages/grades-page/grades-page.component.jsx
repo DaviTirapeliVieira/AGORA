@@ -65,7 +65,7 @@ const GradesPage = () => {
 
       {!loading && (
         <Box className="grades-actions" mt={2}>
-          <Button variant="contained" color="primary" onClick={handleSave}>
+          <Button variant="contained" color="primary" onClick={handleSave} disabled={Object.keys(editedNotas).length === 0}>
             Salvar Notas
           </Button>
         </Box>

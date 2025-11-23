@@ -10,13 +10,13 @@ import GradesPage from '@/components/pages/grades-page/grades-page.component';
 import CalendarPage from '@/components/pages/calendar-page/calendar-page.component';
 import CreateUserPage from '@/components/pages/create-user-page/create-user-page.component';
 import ResetPasswordPage from '@/components/pages/reset-password-page/reset-password-page.component';
-//import Authenticated from '@/logic/authentication/guards/authenticated';
+import Authenticated from '@/logic/authentication/guards/authenticated';
 import Unauthenticated from '@/logic/authentication/guards/unauthenticated';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    //element: <Authenticated />,
+    element: <Authenticated />,
     children: [
       { path: '/', element: <HomePage /> },
       {
@@ -24,6 +24,11 @@ const router = createBrowserRouter([
         children: [
           { path: '', element: <UserListPage /> },
           { path: 'create', element: <CreateUserPage /> },
+        ],
+      },
+      {
+        path: '/operations',
+        children: [
           { path: 'call', element: <CallPage /> },
           { path: 'grades', element: <GradesPage /> },
           { path: 'calendar', element: <CalendarPage /> },

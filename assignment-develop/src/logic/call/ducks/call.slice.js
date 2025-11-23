@@ -6,7 +6,7 @@ const initialState = {
   selectedIndex: 0,
   loading: false,
   error: null,
-  numAulas: [],
+  numAulas: 0,
 };
 
 const callSlice = createSlice({

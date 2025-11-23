@@ -10,7 +10,19 @@ const calendarSlice = createSlice({
   name: 'calendar',
   initialState,
   reducers: {
-    addEventRequest: (state, action) => {
+    fetchEventsRequest: state => {
+      state.loading = true;
+      state.error = null;
+    },
+    fetchEventsSuccess: (state, action) => {
+      state.events = action.payload;
+      state.loading = false;
+    },
+    fetchEventsFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    addEventRequest: state => {
       state.loading = true;
       state.error = null;
     },
@@ -25,7 +37,13 @@ const calendarSlice = createSlice({
   },
 });
 
-export const { addEventRequest, addEventSuccess, addEventFailure } =
-  calendarSlice.actions;
+export const {
+  fetchEventsRequest,
+  fetchEventsSuccess,
+  fetchEventsFailure,
+  addEventRequest,
+  addEventSuccess,
+  addEventFailure,
+} = calendarSlice.actions;
 
 export default calendarSlice.reducer;

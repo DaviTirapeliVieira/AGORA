@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  CircularProgress,
-  Alert,
-  Button,
-} from "@mui/material";
-import MainLayout from "@/components/templates/main-layout/main-layout.component";
-import { ChamadaTemplate } from "@/components/templates/call-layout/call-layout.component";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { CircularProgress, Alert, Button } from '@mui/material';
+import MainLayout from '@/components/templates/main-layout/main-layout.component';
+import { ChamadaTemplate } from '@/components/templates/call-layout/call-layout.component';
 import {
   fetchCallRequest,
   togglePresenca,
@@ -20,9 +16,9 @@ import {
   selectSelectedIndex,
   selectLoading,
   selectError,
-} from "@/logic/call/ducks/call.selectors";
-import UserDetailModal from "@/components/molecules/user-detail-modal/user-detail-modal.component";
-import "./call-page.component.scss";
+} from '@/logic/call/ducks/call.selectors';
+import UserDetailModal from '@/components/molecules/user-detail-modal/user-detail-modal.component';
+import './call-page.component.scss';
 
 const CallPage = () => {
   const dispatch = useDispatch();
@@ -38,9 +34,9 @@ const CallPage = () => {
     dispatch(fetchCallRequest());
   }, [dispatch]);
 
-  const handleViewDetails = (aluno) => {
+  const handleViewDetails = aluno => {
     if (!aluno.id) {
-      console.warn("⚠ Aluno sem ID. Adicione um ID no objeto aluno.");
+      console.warn('⚠ Aluno sem ID. Adicione um ID no objeto aluno.');
       return;
     }
     setSelectedUserId(aluno.id);
@@ -51,10 +47,10 @@ const CallPage = () => {
     setOpenModal(false);
   };
 
-  const moveWithKey = (e) => {
-    if (e.key === "ArrowDown") dispatch(moveSelectedDown());
-    if (e.key === "ArrowUp") dispatch(moveSelectedUp());
-    if (e.key === "Enter" && alunos[selectedIndex])
+  const moveWithKey = e => {
+    if (e.key === 'ArrowDown') dispatch(moveSelectedDown());
+    if (e.key === 'ArrowUp') dispatch(moveSelectedUp());
+    if (e.key === 'Enter' && alunos[selectedIndex])
       dispatch(togglePresenca(alunos[selectedIndex].nome));
   };
 
@@ -72,7 +68,7 @@ const CallPage = () => {
           alunos={alunos}
           presenca={presenca}
           selectedIndex={selectedIndex}
-          onToggle={(name) => dispatch(togglePresenca(name))}
+          onToggle={name => dispatch(togglePresenca(name))}
           onKey={moveWithKey}
           onSave={handleSave}
           handleViewDetails={handleViewDetails}
@@ -85,25 +81,28 @@ const CallPage = () => {
 
       {!loading && (
         <div className="call-actions">
-          <Button variant="contained" color="primary" onClick={handleSave}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSave}
+            disabled={Object.keys(presenca).length === 0}
+          >
             Salvar Presença
           </Button>
         </div>
       )}
 
-      <UserDetailModal
-        open={openModal}
-        handleClose={handleCloseModal}
-        userId={selectedUserId}
-        fetchUserDetails={(id) => console.log("Buscar detalhes do aluno", id)}
-        loading={false}
-        error={null}
-        user={{
-          id: selectedUserId,
-          name: "Nome Exemplo",
-          email: "email@exemplo.com",
-        }}
-      />
+      {openModal && selectedUserId && (
+        <UserDetailModal
+          open={openModal}
+          handleClose={handleCloseModal}
+          userId={selectedUserId}
+          fetchUserDetails={id => console.log('Buscar detalhes do aluno', id)}
+          loading={false}
+          error={null}
+          user={alunos.find(aluno => aluno.id === selectedUserId)}
+        />
+      )}
     </MainLayout>
   );
 };

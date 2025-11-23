@@ -8,7 +8,7 @@ import notificationsApi from '../api/notifications-api';
 
 function* fetchNotificationsSaga() {
   try {
-    const notifications = yield call(notificationsApi, '/api/notifications', 'GET');
+    const notifications = yield call(notificationsApi, '/notifications', 'GET');
     yield put(fetchNotificationsSuccess(notifications));
   } catch (error) {
     yield put(fetchNotificationsFailure(error.message));

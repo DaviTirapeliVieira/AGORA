@@ -13,18 +13,11 @@ const UserCard = ({ user, loading, error }) => {
       {!loading && !error && user && (
         <>
           <div className="avatar-section">
-            <Avatar src={user.image} alt={user.name} />
+            <Avatar src={user?.image || '/icon-user.png'} alt={user?.name || 'User undefined'} />
           </div>
 
           <div className="user-info">
-            <UserInfo
-              name={user.name}
-              email={user.email}
-              phone={user.phone}
-              cpf={user.cpf}
-              address={user.address}
-              date={user.date}
-            />
+            <UserInfo user={user} />
           </div>
         </>
       )}

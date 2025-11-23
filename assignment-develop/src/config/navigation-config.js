@@ -5,7 +5,7 @@ const navigationConfig = [
   },
   {
     path: '/users',
-    label: 'All',
+    label: 'User',
     children: [
       {
         path: '/',
@@ -15,6 +15,12 @@ const navigationConfig = [
         path: '/create',
         label: 'Create User',
       },
+    ],
+  },
+  {
+    path: '/operations',
+    label: 'Operations',
+    children: [
       {
         path: '/call',
         label: 'Call',
@@ -28,7 +34,7 @@ const navigationConfig = [
         label: 'Calendar',
       },
     ],
-  },
+  }
 ];
 
 export default navigationConfig;

@@ -4,19 +4,12 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useSelector, useDispatch } from 'react-redux';
 import { addEventRequest } from '@/logic/calendar/ducks/calendar.slice';
-import {
-  selectCalendarEvents,
-  selectCalendarLoading,
-  selectCalendarError,
-} from '@/logic/calendar/ducks/calendar.selectors';
-import { CircularProgress, Alert } from '@mui/material';
+import { selectCalendarEvents } from '@/logic/calendar/ducks/calendar.selectors';
 import './calendar-page.component.scss';
 
 const CalendarPage = () => {
   const dispatch = useDispatch();
   const events = useSelector(selectCalendarEvents);
-  const loading = useSelector(selectCalendarLoading);
-  const error = useSelector(selectCalendarError);
 
   const safeEvents = Array.isArray(events) ? events : [];
 
@@ -43,8 +36,6 @@ const CalendarPage = () => {
           events={safeEvents}
         />
       </div>
-      {loading && <CircularProgress />}
-      {error && <Alert severity="error">{error}</Alert>}
     </MainLayout>
   );
 };

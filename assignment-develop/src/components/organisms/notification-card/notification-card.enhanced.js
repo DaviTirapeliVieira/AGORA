@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import { fetchNotificationsRequest } from '@/logic/notifications/ducks/notifications-slice';
 import {
-  notificationsSelector,
-  notificationsLoadingSelector,
-  notificationsErrorSelector,
+  selectNotifications,
+  selectNotificationsLoading,
+  selectNotificationsError,
 } from '@/logic/notifications/ducks/notifications-selectors';
 import NotificationCard from './notification-card.component';
 
 const mapStateToProps = state => ({
-  notifications: notificationsSelector(state),
-  loading: notificationsLoadingSelector(state),
-  error: notificationsErrorSelector(state),
+  notifications: selectNotifications(state),
+  loading: selectNotificationsLoading(state),
+  error: selectNotificationsError(state),
 });
 
 const mapDispatchToProps = dispatch => ({

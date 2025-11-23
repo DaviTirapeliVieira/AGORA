@@ -1,33 +1,38 @@
-import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import { Button, TextField, Box, Typography } from '@mui/material';
+import {
+  Button,
+  TextField,
+  Box,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
+import LinkButton from '@/components/atoms/link-button/link-button.component';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendResetLinkRequest } from '@/logic/password_recovery/ducks/password_recovery.slice';
 import './reset-password-form.component.scss';
 
-const propTypes = {
-  error: PropTypes.string,
-  loading: PropTypes.bool.isRequired,
-  sendResetLink: PropTypes.func.isRequired,
-};
-
 const validationSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Email inválido')
-    .required('Email é obrigatório'),
+  email: Yup.string().email('Email inválido').required('Email é obrigatório'),
 });
 
-const PasswordRecoveryForm = ({ error = null, loading, sendResetLink }) => {
+const PasswordRecoveryForm = () => {
+  const dispatch = useDispatch();
+  const { loading } = useSelector(state => state.passwordRecovery);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(validationSchema),
   });
 
   const onSubmit = data => {
-    sendResetLink(data.email);
+    dispatch(sendResetLinkRequest(data.email));
+    reset();
   };
 
   return (
@@ -36,12 +41,19 @@ const PasswordRecoveryForm = ({ error = null, loading, sendResetLink }) => {
       onSubmit={handleSubmit(onSubmit)}
       className="password-recovery-form"
     >
-      <Typography variant="h4" gutterBottom className="password-recovery-form-title">
+      <Typography
+        variant="h5"
+        gutterBottom
+        className="password-recovery-form-title"
+      >
         Recuperar Senha
       </Typography>
+
       <TextField
         label="Email"
         type="email"
+        id="email"
+        autoComplete="email"
         {...register('email')}
         error={!!errors.email}
         helperText={errors.email?.message}
@@ -49,6 +61,7 @@ const PasswordRecoveryForm = ({ error = null, loading, sendResetLink }) => {
         margin="normal"
         className="password-recovery-form-input"
       />
+
       <Button
         type="submit"
         variant="contained"
@@ -56,17 +69,20 @@ const PasswordRecoveryForm = ({ error = null, loading, sendResetLink }) => {
         disabled={loading}
         className="password-recovery-form-button"
       >
-        {loading ? 'Enviando...' : 'Enviar Link de Redefinição'}
+        {loading ? (
+          <CircularProgress size={24} color="inherit" />
+        ) : (
+          'Enviar Link de Redefinição'
+        )}
       </Button>
-      {error && (
-        <Typography className="password-recovery-form-error" color="error">
-          {error}
-        </Typography>
-      )}
+
+      <LinkButton
+        to="/login"
+        label="Voltar ao Login"
+        className="password-recovery-form-login-link"
+      />
     </Box>
   );
 };
-
-PasswordRecoveryForm.propTypes = propTypes;
 
 export default PasswordRecoveryForm;

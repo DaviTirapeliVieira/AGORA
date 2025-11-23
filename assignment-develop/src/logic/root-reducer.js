@@ -9,6 +9,7 @@ import gradesReducer from '@/logic/grades/ducks/grades.slice';
 import generatorReducer from "@/logic/generator/ducks/generator.slice";
 import calendarReducer from "@/logic/calendar/ducks/calendar.slice";
 import classesReducer from "@/logic/classes/ducks/classes.slice";
+import passwordRecoveryReducer from '@/logic/password_recovery/ducks/password_recovery.slice';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   generator: generatorReducer,
   calendar: calendarReducer,
   classes: classesReducer,
+  passwordRecovery: passwordRecoveryReducer
 });
 
 export default rootReducer;

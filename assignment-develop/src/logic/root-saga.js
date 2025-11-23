@@ -7,7 +7,7 @@ import gradesSaga from '@/logic/grades/sagas/grades.saga';
 import generatorSaga from "@/logic/generator/sagas/generator.saga";
 import calendarSaga from "@/logic/calendar/sagas/calendar.saga";
 import classesSaga from "@/logic/classes/sagas/classes.saga";
-
+import watchSendResetLink from '@/logic/password_recovery/sagas/password_recovery.saga';
 
 export default function* rootSaga() {
   yield all([
@@ -19,5 +19,6 @@ export default function* rootSaga() {
     generatorSaga(),
     calendarSaga(),
     classesSaga(),
+    watchSendResetLink(),
   ]);
 }

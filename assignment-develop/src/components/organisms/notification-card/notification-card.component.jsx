@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Label from '@/components/atoms/label/label.component';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 import './notification-card.component.scss';
 
-const NotificationCard = ({ notifications = [], loading, error, fetchNotifications }) => {
+const NotificationCard = ({ notifications = [], loading, error , fetchNotifications }) => {
   useEffect(() => {
     if (fetchNotifications) {
       fetchNotifications();
@@ -14,9 +16,9 @@ const NotificationCard = ({ notifications = [], loading, error, fetchNotificatio
     <div className="notification-card">
       <Label text="Notificações" className="title" />
 
-      {loading && <p>Carregando notificações...</p>}
+      {loading && <CircularProgress />}
 
-      {error && <p>{error}</p>}
+      {error && <Alert severity="error">{error}</Alert>}
 
       {!loading && notifications.length === 0 && !error && (
         <p>Sem notificações no momento.</p>
@@ -41,10 +43,6 @@ NotificationCard.propTypes = {
   loading: PropTypes.bool.isRequired,
   error: PropTypes.string,
   fetchNotifications: PropTypes.func.isRequired,
-};
-
-NotificationCard.defaultProps = {
-  error: null,
 };
 
 export default NotificationCard;
