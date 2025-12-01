@@ -1,5 +1,5 @@
-import MainLayout from "@/components/templates/main-layout/main-layout.component";
-import UserForm from "@/components/organisms/user-form/user-form.component";
+import MainLayout from '@/components/templates/main-layout/main-layout.component';
+import { UserForm } from '@/components/organisms/user-form';
 
 const CreateUserPage = () => {
   return (
@@ -9,6 +9,6 @@ const CreateUserPage = () => {
       </div>
     </MainLayout>
   );
-}
+};
 
 export default CreateUserPage;

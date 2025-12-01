@@ -4,11 +4,18 @@ import {
   fetchNotificationsSuccess,
   fetchNotificationsFailure,
 } from '../ducks/notifications-slice';
-import notificationsApi from '../api/notifications-api';
+import { notificationsApi } from '../api/notifications-api';
+
+// Test
+// import { fetchNotificationsTest } from '../api/notifications-api.test';
 
 function* fetchNotificationsSaga() {
   try {
-    const notifications = yield call(notificationsApi, '/notifications', 'GET');
+    const notifications = yield call(
+      notificationsApi.getNotification,
+      '/notifications',
+      'GET',
+    );
     yield put(fetchNotificationsSuccess(notifications));
   } catch (error) {
     yield put(fetchNotificationsFailure(error.message));

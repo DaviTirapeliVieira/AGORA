@@ -4,14 +4,16 @@ import {
   sendResetLinkSuccess,
   sendResetLinkFailure,
 } from '../ducks/password_recovery.slice';
-import { sendResetLink as apiSendResetLink } from '../api/password_recovery.api';
+import { resetPasswordApi } from '../api/password_recovery.api';
 
 function* handleSendResetLink(action) {
   try {
-    yield call(apiSendResetLink, action.payload);
+    yield call(resetPasswordApi.sendLink, action.payload);
     yield put(sendResetLinkSuccess());
   } catch (error) {
-    yield put(sendResetLinkFailure(error.response?.data?.message || error.message));
+    yield put(
+      sendResetLinkFailure(error.response?.data?.message || error.message),
+    );
   }
 }
 

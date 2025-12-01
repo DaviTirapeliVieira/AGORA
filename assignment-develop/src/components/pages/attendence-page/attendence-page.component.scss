@@ -1,0 +1,59 @@
+$card: #ffffff;
+$accent: #19bd0a;
+
+.card {
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+}
+
+.top-controls {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+
+  .atom-select {
+    width: 200px;
+  }
+}
+
+.table-wrap {
+  margin-top: 18px;
+}
+
+table.attendance {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  thead tr {
+    background: #f0f6f7;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #e6eef0;
+  }
+
+  .status-aprovado {
+    color: #0a9b14;
+    font-weight: 600;
+  }
+
+  .status-reprovado {
+    color: #c91515;
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 800px) {
+  .top-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  table.attendance {
+    font-size: 12px;
+  }
+}

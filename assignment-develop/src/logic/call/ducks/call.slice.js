@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+// call.slice.js
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   alunos: [],
@@ -10,17 +11,17 @@ const initialState = {
 };
 
 const callSlice = createSlice({
-  name: "call",
+  name: 'call',
   initialState,
   reducers: {
-    fetchCallRequest: (state) => {
+    fetchCallRequest: (state, action) => {
       state.loading = true;
       state.error = null;
+      state.classId = action.payload; // armazenando qual aula buscar
     },
 
     fetchCallSuccess: (state, action) => {
       state.loading = false;
-
       const alunos = action.payload?.alunos ?? [];
       const numAulas = action.payload?.numAulas ?? 0;
 
@@ -28,7 +29,7 @@ const callSlice = createSlice({
       state.numAulas = numAulas;
 
       state.presenca = alunos.reduce((acc, aluno) => {
-        acc[aluno.name] = Array(numAulas).fill(false);
+        acc[aluno.nome] = Array(numAulas).fill(false);
         return acc;
       }, {});
     },
@@ -39,33 +40,34 @@ const callSlice = createSlice({
     },
 
     togglePresenca: (state, action) => {
-      const { name, aulaIndex } = action.payload;
-      if (!state.presenca[name]) {
-        state.presenca[name] = Array(state.numAulas).fill(false);
+      const { alunoId, aulaIndex } = action.payload;
+      if (!state.presenca[alunoId]) {
+        state.presenca[alunoId] = Array(state.numAulas).fill(false);
       }
-      state.presenca[name][aulaIndex] = !state.presenca[name][aulaIndex];
+      state.presenca[alunoId][aulaIndex] = !state.presenca[alunoId][aulaIndex];
     },
 
-    moveSelectedUp: (state) => {
+    moveSelectedUp: state => {
       if (state.alunos.length > 0) {
         state.selectedIndex =
           (state.selectedIndex - 1 + state.alunos.length) % state.alunos.length;
       }
     },
 
-    moveSelectedDown: (state) => {
+    moveSelectedDown: state => {
       if (state.alunos.length > 0) {
-        state.selectedIndex =
-          (state.selectedIndex + 1) % state.alunos.length;
+        state.selectedIndex = (state.selectedIndex + 1) % state.alunos.length;
       }
     },
 
-    saveCallRequest: (state) => {
+    saveCallRequest: state => {
       state.loading = true;
     },
-    saveCallSuccess: (state) => {
+
+    saveCallSuccess: state => {
       state.loading = false;
     },
+
     saveCallFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;

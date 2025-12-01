@@ -1,18 +1,30 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import {
   fetchTodayClassesRequest,
   fetchTodayClassesSuccess,
   fetchTodayClassesFailure,
 } from '../ducks/classes.slice';
-import { getClasses } from '../api/classes.api';
+
+import { ClassesApi } from '../api/classes.api';
 
 function* fetchTodayClassesSaga() {
   try {
-    const data = yield call(getClasses);
-    yield put(fetchTodayClassesSuccess(data));
+    const user = yield select(state => state.userDetails.user);
+
+    if (!user || !user.id || !user.role) {
+      yield put(fetchTodayClassesFailure('Usuário não autenticado'));
+      return;
+    }
+
+    const classes = yield call(ClassesApi.getClasses, user.id, user.role);
+
+    yield put(fetchTodayClassesSuccess(classes));
   } catch (error) {
+    console.error('ERRO AO CARREGAR AULAS:', error);
     yield put(
-      fetchTodayClassesFailure(error.response?.data?.message || 'Failed to load classes')
+      fetchTodayClassesFailure(
+        error.response?.data?.message || 'Failed to load classes',
+      ),
     );
   }
 }

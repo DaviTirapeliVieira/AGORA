@@ -4,12 +4,12 @@ import {
   fetchUsersSuccess,
   fetchUsersFailure,
 } from '../ducks/get-users-slice';
-import { fetchAllUsers } from '../api/user-api';
+import { UserApi } from '../api/user-api';
 import User from '../models/user-model';
 
 const fetchUsersSaga = function* fetchUsersSaga() {
   try {
-    const usersResponse = yield call(fetchAllUsers);
+    const usersResponse = yield call(UserApi.fetchAllUsers);
     const users = usersResponse.map(user =>
       User.fromPlainObject(user).toPlainObject(),
     );

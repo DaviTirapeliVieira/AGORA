@@ -1,0 +1,62 @@
+$card: #ffffff;
+$accent: #19bd0a;
+
+.card {
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
+}
+
+.top-controls {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+}
+.top-controls .atom-select {
+  width: 200px;
+}
+
+button.primary {
+  background: $accent;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+button.primary[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.table-wrap {
+  margin-top: 18px;
+}
+table.boletim {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+table.boletim thead tr {
+  background: #f0f6f7;
+}
+table.boletim th,
+table.boletim td {
+  padding: 10px;
+  border: 1px solid #e6eef0;
+}
+
+.status-cursando {
+  color: #0aa5bd;
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .top-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  table.boletim {
+    font-size: 12px;
+  }
+}

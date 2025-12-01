@@ -23,3 +23,5 @@ export const ChamadaTemplate = ({
     />
   </div>
 );
+
+export default ChamadaTemplate;

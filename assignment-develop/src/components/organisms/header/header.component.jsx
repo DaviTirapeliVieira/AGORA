@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   AppBar,
@@ -19,9 +20,20 @@ const propTypes = {
 };
 
 const Header = ({ title }) => {
+  const userRole = useSelector(state => state.user.userDetails.user?.role);
   const [submenuAnchorEls, setSubmenuAnchorEls] = useState({});
 
   const navItems = navigationConfig;
+
+  const filterByRole = items =>
+    items
+      .filter(item => !item.roles || item.roles.includes(userRole))
+      .map(item => ({
+        ...item,
+        children: item.children ? filterByRole(item.children) : null,
+      }));
+
+  const filteredNav = filterByRole(navItems);
 
   const handleSubmenu = (event, path) => {
     setSubmenuAnchorEls(prevState => ({
@@ -40,12 +52,12 @@ const Header = ({ title }) => {
   return (
     <AppBar position="static" color="primary">
       <Toolbar className="header-toolbar">
-          <Typography variant="h6" className="header-title">
-            <Link className="header-link" to="/">
-              {title}
-            </Link>
-          </Typography>
-        {navItems.map(item =>
+        <Typography variant="h6" className="header-title">
+          <Link className="header-link" to="/">
+            {title}
+          </Link>
+        </Typography>
+        {filteredNav.map(item =>
           item.children ? (
             <Box key={item.path}>
               <Button

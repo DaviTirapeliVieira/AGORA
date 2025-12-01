@@ -57,24 +57,6 @@
             color: #0d6efd;
           }
         }
-
-        button.btn-info {
-          background-color: #0dcaf0;
-          border: none;
-          color: white;
-          font-size: 1rem;
-          padding: 0.3rem 0.6rem;
-          border-radius: 0.3rem;
-          transition: background-color 0.2s ease;
-
-          &:hover {
-            background-color: #0bbbd8;
-          }
-
-          i {
-            font-size: 1.2rem;
-          }
-        }
       }
     }
   }
@@ -82,18 +64,4 @@
   .modal-background {
     background-color: rgba(0, 0, 0, 0.6);
   }
-}
-
-.call-actions {
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  margin-left: auto;
-  margin-top: 1rem;
-  border: none;
-  color: #fff;
-  font-weight: 500;
-  padding: 0.6rem 1.4rem;
-  border-radius: 0.4rem;
-  transition: background-color 0.2s ease;
 }

@@ -10,8 +10,13 @@ import GradesPage from '@/components/pages/grades-page/grades-page.component';
 import CalendarPage from '@/components/pages/calendar-page/calendar-page.component';
 import CreateUserPage from '@/components/pages/create-user-page/create-user-page.component';
 import ResetPasswordPage from '@/components/pages/reset-password-page/reset-password-page.component';
+import BulletinPage from '@/components/pages/bulletin-page/bulletin-page.component';
+import AttendancePage from '@/components/pages/attendence-page/attendence-page.component';
+import CreateDisciplinePage from '@/components/pages/create-discipline-page/create-discipline-page.component';
+import NotAuthorizedPage from '@/components/pages/not-authorized-page/not-authorized.component';
 import Authenticated from '@/logic/authentication/guards/authenticated';
 import Unauthenticated from '@/logic/authentication/guards/unauthenticated';
+import RoleGuard from '@/logic/authentication/guards/role-guard';
 
 const router = createBrowserRouter([
   {
@@ -20,28 +25,46 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       {
-        path: '/users',
+        element: <RoleGuard allowedRoles={['admin', 'secretary']} />,
         children: [
-          { path: '', element: <UserListPage /> },
-          { path: 'create', element: <CreateUserPage /> },
+          { path: '/users', element: <UserListPage /> },
+          { path: '/users/create', element: <CreateUserPage /> },
+          {
+            path: '/users/createDiscipline',
+            element: <CreateDisciplinePage />,
+          },
         ],
       },
       {
-        path: '/operations',
+        element: <RoleGuard allowedRoles={['admin', 'secretary', 'teacher']} />,
         children: [
-          { path: 'call', element: <CallPage /> },
-          { path: 'grades', element: <GradesPage /> },
-          { path: 'calendar', element: <CalendarPage /> },
+          { path: '/operations/call/:classId', element: <CallPage /> },
+          { path: '/operations/grades', element: <GradesPage /> },
         ],
       },
       {
-        path: '/generator',
-        element: <GeneratorPage />,
+        element: (
+          <RoleGuard
+            allowedRoles={['admin', 'secretary', 'teacher', 'student']}
+          />
+        ),
+        children: [{ path: '/operations/calendar', element: <CalendarPage /> }],
+      },
+      {
+        element: <RoleGuard allowedRoles={['student']} />,
+        children: [{ path: '/users/bulletin', element: <BulletinPage /> }],
+      },
+      {
+        element: <RoleGuard allowedRoles={['student']} />,
+        children: [{ path: '/users/attendance', element: <AttendancePage /> }],
+      },
+      {
+        element: <RoleGuard allowedRoles={['admin']} />,
+        children: [{ path: '/generator', element: <GeneratorPage /> }],
       },
     ],
   },
   {
-    path: '/',
     element: <Unauthenticated />,
     children: [
       {
@@ -56,11 +79,11 @@ const router = createBrowserRouter([
       },
     ],
   },
+
+  { path: '/not-authorized', element: <NotAuthorizedPage /> },
   { path: '*', element: <NotFoundPage /> },
 ]);
 
-const AppRouter = () => {
-  return <RouterProvider router={router} />;
-};
+const AppRouter = () => <RouterProvider router={router} />;
 
 export default AppRouter;

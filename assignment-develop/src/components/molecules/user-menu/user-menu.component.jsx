@@ -74,6 +74,7 @@ const UserMenu = ({ onLogout }) => {
           <Box ml={2}>
             <Typography variant="body1">{user.name}</Typography>
             <Typography variant="body2">{user.email}</Typography>
+            <Typography variant="body2">{user.role}</Typography>
           </Box>
         </Box>
         <MenuItem onClick={handleLogout} className="profile-menu-item">

@@ -4,12 +4,15 @@ import {
   fetchUserSuccess,
   fetchUserFailure,
 } from '../ducks/get-user-slice';
-import { fetchUserById } from '../api/user-api';
+import { UserApi } from '../api/user-api';
 import User from '../models/user-model';
+
+// Test
+// import { fetchUserTest } from '../api/user-api.test';
 
 const fetchUserSaga = function* fetchUserSaga(action) {
   try {
-    const userResponse = yield call(fetchUserById, action.payload);
+    const userResponse = yield call(UserApi.fetchUserById, action.payload);
     const user = User.fromPlainObject(userResponse);
     yield put(fetchUserSuccess(user.toPlainObject()));
   } catch (error) {

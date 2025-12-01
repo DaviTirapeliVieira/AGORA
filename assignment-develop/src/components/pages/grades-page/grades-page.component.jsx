@@ -1,77 +1,76 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import GradeAssignmentTemplate from '@/components/templates/grades-layout/grades-layout.component';
 import {
-  Box,
-  CircularProgress,
-  Alert,
-  Button,
-} from "@mui/material";
-import MainLayout from "@/components/templates/main-layout/main-layout.component";
-import { GradesTemplate } from "@/components/templates/grades-layout/grades-layout.component";
-import {
-  fetchGradesRequest,
+  fetchGradeScreenDataRequest,
+  searchGradesRequest,
+  updateGradeFilter,
+  updateStudentGrade,
   saveGradesRequest,
-} from "@/logic/grades/ducks/grades.slice";
+  resetGradesState,
+} from '@/logic/grades/ducks/grades.slice';
 import {
-  selectAlunos,
-  selectNotas,
-  selectLoading,
-  selectError,
-} from "@/logic/grades/ducks/grades.selector";
+  selectGradeFilters,
+  selectGradeFilterOptions,
+  selectGradeRows,
+  selectGradeLoading,
+  selectGradeSaving,
+  selectGradeError,
+} from '@/logic/grades/ducks/grades.selector';
 
-const GradesPage = () => {
+const GradeAssignmentPage = () => {
   const dispatch = useDispatch();
 
-  const alunos = useSelector(selectAlunos);
-  const notas = useSelector(selectNotas);
-  const loading = useSelector(selectLoading);
-  const error = useSelector(selectError);
-
-  const [editedNotas, setEditedNotas] = useState({});
+  const filters = useSelector(selectGradeFilters);
+  const filterOptions = useSelector(selectGradeFilterOptions);
+  const rows = useSelector(selectGradeRows);
+  const loading = useSelector(selectGradeLoading);
+  const saving = useSelector(selectGradeSaving);
+  const error = useSelector(selectGradeError);
 
   useEffect(() => {
-    dispatch(fetchGradesRequest());
+    dispatch(fetchGradeScreenDataRequest());
+
+    return () => {
+      dispatch(resetGradesState());
+    };
   }, [dispatch]);
 
-  const handleNotaChange = (idAluno, novaNota) => {
-    setEditedNotas((prev) => ({
-      ...prev,
-      [idAluno]: novaNota,
-    }));
+  const handleChangeFilter = (field, value) => {
+    dispatch(updateGradeFilter({ field, value }));
+  };
+
+  const handleSearch = () => {
+    dispatch(searchGradesRequest());
+  };
+
+  const handleChangeConcept = (studentId, field, value) => {
+    dispatch(updateStudentGrade({ studentId, field, value }));
   };
 
   const handleSave = () => {
-    const notasParaSalvar = { ...notas, ...editedNotas };
-    dispatch(saveGradesRequest(notasParaSalvar));
+    dispatch(saveGradesRequest());
+  };
+
+  const handleCancel = () => {
+    dispatch(searchGradesRequest());
   };
 
   return (
-    <MainLayout>
-      {loading && <CircularProgress />}
-      {error && <Alert severity="error">{error}</Alert>}
-
-      {!loading && !error && alunos.length > 0 && (
-        <GradesTemplate
-          alunos={alunos}
-          notas={notas}
-          editedNotas={editedNotas}
-          onNotaChange={handleNotaChange}
-        />
-      )}
-
-      {!loading && !error && alunos.length === 0 && (
-        <Alert severity="info">Nenhum aluno encontrado.</Alert>
-      )}
-
-      {!loading && (
-        <Box className="grades-actions" mt={2}>
-          <Button variant="contained" color="primary" onClick={handleSave} disabled={Object.keys(editedNotas).length === 0}>
-            Salvar Notas
-          </Button>
-        </Box>
-      )}
-    </MainLayout>
+    <GradeAssignmentTemplate
+      filters={filters}
+      filterOptions={filterOptions}
+      rows={rows}
+      onChangeFilter={handleChangeFilter}
+      onSearch={handleSearch}
+      onChangeConcept={handleChangeConcept}
+      onSave={handleSave}
+      onCancel={handleCancel}
+      loading={loading}
+      saving={saving}
+      error={error}
+    />
   );
 };
 
-export default GradesPage;
+export default GradeAssignmentPage;

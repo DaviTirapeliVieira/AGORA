@@ -49,10 +49,14 @@ const UserDetailModal = ({
       open={open}
       onClose={handleClose}
       closeAfterTransition
-      BackdropComponent={Backdrop}
+      BackdropComponent={false}
       BackdropProps={{
         timeout: 500,
       }}
+      disableEnforceFocus
+      disableAutoFocus
+      disableRestoreFocus
+      disableScrollLock
     >
       <Fade in={open} timeout={500}>
         <Box className="user-detail-box">

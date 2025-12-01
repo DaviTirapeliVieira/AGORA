@@ -1,36 +1,72 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import {
-  fetchGradesRequest,
-  fetchGradesSuccess,
-  fetchGradesFailure,
+  fetchGradeScreenDataRequest,
+  fetchGradeScreenDataSuccess,
+  fetchGradeScreenDataFailure,
+  searchGradesRequest,
+  searchGradesSuccess,
+  searchGradesFailure,
   saveGradesRequest,
   saveGradesSuccess,
   saveGradesFailure,
-} from "../ducks/grades.slice";
-import { getGrades, saveGrades } from "../api/grades.api";
+} from '../ducks/grades.slice';
+import {
+  selectGradeFilters,
+  selectGradeOriginalList,
+} from '../ducks/grades.selector';
 
-function* fetchGradesSaga() {
+import { GradesApi } from '../api/grades.api';
+
+// Test
+// import {
+//   fetchGradeScreenDataApi,
+//   searchGradesApi,
+//   saveGradesApi,
+// } from '@/logic/grades/api/grades.api.test';
+
+function* handleFetchGradeScreenData() {
   try {
-    const data = yield call(getGrades);
-    yield put(fetchGradesSuccess(data));
+    const response = yield call(GradesApi.getGrades);
+    yield put(fetchGradeScreenDataSuccess(response));
   } catch (error) {
-    console.error("Erro ao buscar notas:", error);
-    yield put(fetchGradesFailure(error.response?.data?.message || "Erro ao carregar notas"));
+    yield put(
+      fetchGradeScreenDataFailure(
+        error?.message || 'Erro ao carregar dados da tela de notas.',
+      ),
+    );
   }
 }
 
-function* saveGradesSaga(action) {
+function* handleSearchGrades() {
   try {
-    yield call(saveGrades, action.payload);
-    yield put(saveGradesSuccess());
-    alert("Notas salvas com sucesso!");
+    const filters = yield select(selectGradeFilters);
+
+    const result = yield call(GradesApi.searchGrades, filters);
+    yield put(searchGradesSuccess(result));
   } catch (error) {
-    console.error("Erro ao salvar notas:", error);
-    yield put(saveGradesFailure(error.response?.data?.message || "Erro ao salvar notas"));
+    yield put(
+      searchGradesFailure(error?.message || 'Erro ao carregar alunos.'),
+    );
+  }
+}
+
+function* handleSaveGrades() {
+  try {
+    const filters = yield select(selectGradeFilters);
+    const originalList = yield select(selectGradeOriginalList);
+
+    yield call(GradesApi.saveGrades, { filters, originalList });
+
+    yield put(saveGradesSuccess());
+  } catch (error) {
+    yield put(saveGradesFailure(error?.message || 'Erro ao salvar as notas.'));
   }
 }
 
 export default function* gradesSaga() {
-  yield takeLatest(fetchGradesRequest.type, fetchGradesSaga);
-  yield takeLatest(saveGradesRequest.type, saveGradesSaga);
+  yield all([
+    takeLatest(fetchGradeScreenDataRequest.type, handleFetchGradeScreenData),
+    takeLatest(searchGradesRequest.type, handleSearchGrades),
+    takeLatest(saveGradesRequest.type, handleSaveGrades),
+  ]);
 }

@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import {
   fetchCallSuccess,
   fetchCallFailure,
@@ -6,30 +6,66 @@ import {
   saveCallFailure,
   fetchCallRequest,
   saveCallRequest,
-} from "../ducks/call.slice";
-import { getCall, saveCall } from "../api/call-api";
+} from '../ducks/call.slice';
+import { CallApi } from '../api/call-api';
 
-function* fetchCallSaga() {
+// Test
+// import { fetchCallApi, saveCallApi } from '../api/call.api.test';
+
+function* fetchCallSaga(action) {
   try {
-    const data = yield call(getCall);
-    yield put(fetchCallSuccess(data));
+    const classId = action.payload;
+
+    const user = yield select(state => state.userDetails.user);
+
+    if (!user || !user.id) {
+      yield put(fetchCallFailure('Usuário não está autenticado'));
+      return;
+    }
+
+    if (user.role === 'teacher') {
+      const classesToday = yield select(state => state.classes.classesToday);
+
+      const aulaDoProfessor = classesToday.find(c => c.id === classId);
+
+      if (!aulaDoProfessor) {
+        yield put(
+          fetchCallFailure('Você não tem permissão para ver esta chamada'),
+        );
+        return;
+      }
+    }
+    const response = yield call(CallApi.getCall, classId);
+
+    yield put(fetchCallSuccess(response));
   } catch (error) {
-    console.error("Erro ao buscar chamada:", error);
     yield put(
-      fetchCallFailure(error.response?.data?.message || "Erro ao carregar chamada")
+      fetchCallFailure(
+        error.response?.data?.message || 'Erro ao carregar chamada',
+      ),
     );
   }
 }
 
 function* saveCallSaga(action) {
   try {
-    yield call(saveCall, action.payload);
+    const { classId, presenca } = action.payload;
+
+    const user = yield select(state => state.userDetails.user);
+
+    if (!user || !user.id) {
+      yield put(saveCallFailure('Usuário não autenticado'));
+      return;
+    }
+
+    yield call(CallApi.saveCal, { classId, presenca });
+
     yield put(saveCallSuccess());
-    alert("Chamada salva com sucesso!");
   } catch (error) {
-    console.error("Erro ao salvar chamada:", error);
     yield put(
-      saveCallFailure(error.response?.data?.message || "Erro ao salvar chamada")
+      saveCallFailure(
+        error.response?.data?.message || 'Erro ao salvar chamada',
+      ),
     );
   }
 }

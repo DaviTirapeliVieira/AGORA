@@ -8,6 +8,9 @@ import generatorSaga from "@/logic/generator/sagas/generator.saga";
 import calendarSaga from "@/logic/calendar/sagas/calendar.saga";
 import classesSaga from "@/logic/classes/sagas/classes.saga";
 import watchSendResetLink from '@/logic/password_recovery/sagas/password_recovery.saga';
+import boletimWatcher from '@/logic/bulletin/sagas/bulletin.saga';
+import attendanceWatcher from '@/logic/attendence/sagas/attendence.saga';
+import teacherSaga from '@/logic/teacher/sagas/teacher.saga';
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +23,8 @@ export default function* rootSaga() {
     calendarSaga(),
     classesSaga(),
     watchSendResetLink(),
+    boletimWatcher(),
+    attendanceWatcher(),
+    teacherSaga()
   ]);
 }

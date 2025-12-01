@@ -8,6 +8,7 @@ class User {
     rememberToken,
     createdAt,
     updatedAt,
+    role
   ) {
     this.id = id || null;
     this.name = name || '';
@@ -17,6 +18,7 @@ class User {
     this.rememberToken = rememberToken || null;
     this.createdAt = createdAt || new Date().toISOString();
     this.updatedAt = updatedAt || new Date().toISOString();
+    this.role = role || 'student';
   }
 
   validatePassword(inputPassword) {
@@ -42,6 +44,7 @@ class User {
       obj.rememberToken,
       obj.createdAt,
       obj.updatedAt,
+      obj.role
     );
   }
 
@@ -55,6 +58,7 @@ class User {
       rememberToken: this.rememberToken,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
+      role: this.role,
     };
   }
 }

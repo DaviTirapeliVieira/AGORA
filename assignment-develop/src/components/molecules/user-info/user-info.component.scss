@@ -14,7 +14,6 @@
   }
 
   &__item {
-    display: flex;
     flex-direction: column;
     gap: 2px;
   }
@@ -25,8 +24,7 @@
     margin: 0;
   }
 
-  .label {
-    font-size: 1rem;
-    color: #555;
+  &__title-user {
+    font-weight: 600;
   }
 }

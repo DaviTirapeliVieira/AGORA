@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
-import { createUserApi } from '../api/user-api'
+import { UserApi } from '../api/user-api'
 import { createUserSuccess, createUserFailure, createUserRequest } from '../ducks/create-user-slice'
 
 function* createUser(action){
   try{
-    const response = yield call(createUserApi, action.payload)
+    const response = yield call(UserApi.createUser, action.payload)
     yield put(createUserSuccess(response))
   }catch(error){
     yield put(createUserFailure(error.response?.data || error.message))

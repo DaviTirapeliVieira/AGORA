@@ -1,17 +1,23 @@
 import { Checkbox } from '@/components/atoms/checkbox/checkbox.component';
-import { IconButton, Tooltip } from "@mui/material";
-import { Visibility } from "@mui/icons-material";
-import "./student-item.component.scss";
+import { IconButton, Tooltip } from '@mui/material';
+import { Visibility } from '@mui/icons-material';
+import './student-item.component.scss';
 
-export const StudentItem = ({ aluno, checked = [], onToggle, selected, numAulas }) => {
+export const StudentItem = ({
+  aluno,
+  presenca = [],
+  onToggle,
+  selected,
+  onViewDetails,
+}) => {
   return (
-    <li className={`student-item ${selected ? "selected" : ""}`}>
+    <li className={`student-item ${selected ? 'selected' : ''}`}>
       <div className="info">
-        {Array.from({ length: numAulas }).map((_, index) => (
+        {Array.from({ length: aluno.numAula }).map((_, index) => (
           <Checkbox
             key={index}
-            checked={checked[index] || false}
-            onChange={() => onToggle(aluno.nome, index)}
+            checked={presenca[index] || false}
+            onChange={() => onToggle(aluno.id, index)}
           />
         ))}
         <span>{aluno.nome}</span>

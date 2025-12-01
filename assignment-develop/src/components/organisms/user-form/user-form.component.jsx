@@ -1,55 +1,215 @@
-import React, { useState } from 'react'
-import Input from '@/components/atoms/input/input.component'
-import Select from '@/components/atoms/select/select.component'
-import Button from '@/components/atoms/button/button.component'
-import FormGroup from '@/components/molecules/form-group/form-group.component'
-import { useDispatch, useSelector } from 'react-redux'
-import { createUserRequest } from '@/logic/user/ducks/create-user-slice'
-import './user-form.component.scss'
+import PropTypes from 'prop-types';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  MenuItem,
+  CircularProgress,
+} from '@mui/material';
+import './user-form.component.scss';
 
+const UserForm = ({ currentUserRole, loading, error, createUser }) => {
+  const allRoles = [
+    { label: 'Administrador', value: 'admin' },
+    { label: 'Secretaria', value: 'secretary' },
+    { label: 'Professor', value: 'teacher' },
+    { label: 'Aluno', value: 'student' },
+  ];
 
-const UserForm = () =>{
-  const dispatch = useDispatch()
-  const loading = useSelector(state => state.user.loading)
-  const [form, setForm] = useState({ name: '', email: '', password: '', role: 'user' })
+  const availableRoles =
+    currentUserRole === 'admin'
+      ? allRoles
+      : currentUserRole === 'secretary'
+      ? allRoles.filter(r => r.value === 'teacher' || r.value === 'student')
+      : [];
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required('Nome é obrigatório'),
+    email: Yup.string().email('Email inválido').required('Email é obrigatório'),
+    password: Yup.string().required('Senha é obrigatória'),
+    role: Yup.string().required('Perfil é obrigatório'),
+    photo: Yup.mixed()
+      .test('fileSize', 'A foto deve ter no máximo 2MB', value => {
+        return !value || (value && value.size <= 2097152);
+      })
+      .test('fileType', 'Formato inválido (jpg/png)', value => {
+        return (
+          !value ||
+          (value &&
+            ['image/jpeg', 'image/png', 'image/jpg'].includes(value.type))
+        );
+      }),
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setForm(prev=> ({ ...prev, [name]: value }))
-  }
+  const {
+    register,
+    handleSubmit,
+    control,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      role: availableRoles[0]?.value || 'student',
+      photo: null,
+    },
+  });
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    dispatch(createUserRequest(form))
+  const onSubmit = data => {
+    const payload = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value) payload.append(key, value);
+    });
+
+    createUser(payload);
+    reset({
+      name: '',
+      email: '',
+      password: '',
+      role: availableRoles[0]?.value || 'student',
+      photo: null,
+    });
+  };
+
+  if (!currentUserRole) return null;
+
+  if (!['admin', 'secretary'].includes(currentUserRole)) {
+    return (
+      <Typography color="error">
+        Você não tem permissão para criar usuários.
+      </Typography>
+    );
   }
 
   return (
-    <div className="user-form-card">
-    <form className="user-form" onSubmit={handleSubmit}>
-      <h2>Criar usuário</h2>
-      <FormGroup label="Nome">
-        <Input name="name" value={form.name} onChange={handleChange} placeholder="Nome" required />
-      </FormGroup>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      className="user-form"
+    >
+      <Typography variant="h4" gutterBottom className="user-form-title">
+        Criar Usuário
+      </Typography>
 
-      <FormGroup label="Email">
-        <Input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" required />
-      </FormGroup>
+      <Box className="user-form-grid">
+        <Box className="left-column">
+          <TextField
+            label="Nome"
+            {...register('name')}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            fullWidth
+            margin="normal"
+          />
 
-      <FormGroup label="Senha">
-        <Input name="password" type="password" value={form.password} onChange={handleChange} placeholder="Senha" required />
-      </FormGroup>
+          <TextField
+            label="Email"
+            type="email"
+            {...register('email')}
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            fullWidth
+            margin="normal"
+          />
+        </Box>
 
-      <FormGroup label="Perfil">
-        <Select name="role" value={form.role} onChange={handleChange} options={[{label:'Usuário', value:'user'},{label:'Administrador', value:'admin'}]} />
-      </FormGroup>
+        <Box className="right-column">
+          <TextField
+            label="Senha"
+            type="password"
+            {...register('password')}
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            fullWidth
+            margin="normal"
+          />
 
-      <div className="form-row">
-        <Button type="submit" label={loading ? 'Criando...' : 'Criar'} />
-      </div>
-    </form>
-    </div>
-  )
-}
+          <Controller
+            name="role"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                select
+                label="Perfil"
+                {...field}
+                error={!!errors.role}
+                helperText={errors.role?.message}
+                fullWidth
+                margin="normal"
+              >
+                {availableRoles.map(r => (
+                  <MenuItem key={r.value} value={r.value}>
+                    {r.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+          />
 
-export default UserForm
+          <Controller
+            name="photo"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                fullWidth
+                margin="normal"
+                label="Foto de Perfil"
+                value={field.value ? field.value.name : ''}
+                placeholder="Foto de Perfil"
+                InputProps={{
+                  readOnly: true,
+                  endAdornment: (
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: 'none' }}
+                      id="photo-input"
+                      onChange={e => field.onChange(e.target.files[0])}
+                    />
+                  ),
+                }}
+                onClick={() => document.getElementById('photo-input').click()}
+                error={!!errors.photo}
+                helperText={errors.photo?.message}
+                InputLabelProps={{ shrink: true }}
+              />
+            )}
+          />
+        </Box>
+      </Box>
+
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        disabled={loading}
+        className="user-form-button"
+        startIcon={loading && <CircularProgress size={20} />}
+      >
+        {loading ? 'Criando...' : 'Criar'}
+      </Button>
+
+      {error && (
+        <Typography color="error" className="user-form-error">
+          {error}
+        </Typography>
+      )}
+    </Box>
+  );
+};
+
+UserForm.propTypes = {
+  currentUserRole: PropTypes.string,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
+  createUser: PropTypes.func.isRequired,
+};
+
+export default UserForm;

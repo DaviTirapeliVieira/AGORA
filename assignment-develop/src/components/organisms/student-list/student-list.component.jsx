@@ -16,7 +16,7 @@ export const StudentList = ({
       <StudentItem
         key={aluno.id}
         aluno={aluno}
-        checked={presenca[aluno.name]}
+        presenca={presenca[aluno.id]}
         selected={selectedIndex === index}
         onToggle={onToggle}
         numAulas={numAulas}
